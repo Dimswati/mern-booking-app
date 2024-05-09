@@ -1,7 +1,10 @@
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, redirect, RouterProvider } from 'react-router-dom'
 import Layout from './layouts/layouts'
 import Register from './pages/Register'
 import SignIn from './pages/SignIn'
+import AddHotel from './pages/AddHotel'
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ""
 
 const router = createBrowserRouter([
   {
@@ -23,6 +26,21 @@ const router = createBrowserRouter([
       {
         path: "sign-in",
         element: <SignIn/>
+      },
+      {
+        path: "add-hotel",
+        element: <AddHotel/>,
+        loader: async() => {
+          const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
+            credentials: "include"
+          })
+
+          if(!response.ok) {
+            return redirect("/sign-in")
+          }
+
+          return null
+        }
       }
     ]
   },
@@ -33,6 +51,7 @@ const router = createBrowserRouter([
 ])
 
 const App = () => {
+
   return <RouterProvider router={router} />
 }
 
