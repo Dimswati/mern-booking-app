@@ -3,13 +3,15 @@ import Layout from './layouts/layouts'
 import Register from './pages/Register'
 import SignIn from './pages/SignIn'
 import AddHotel from './pages/AddHotel'
+import MyHotels from './pages/MyHotels'
+import EditHotel from './pages/EditHotel'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ""
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout/>,
+    element: <Layout />,
     children: [
       {
         index: true,
@@ -21,21 +23,51 @@ const router = createBrowserRouter([
       },
       {
         path: "register",
-        element: <Register/>
+        element: <Register />
       },
       {
         path: "sign-in",
-        element: <SignIn/>
+        element: <SignIn />
       },
       {
         path: "add-hotel",
-        element: <AddHotel/>,
-        loader: async() => {
+        element: <AddHotel />,
+        loader: async () => {
           const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
             credentials: "include"
           })
 
-          if(!response.ok) {
+          if (!response.ok) {
+            return redirect("/sign-in")
+          }
+
+          return null
+        }
+      },
+      {
+        path: "my-hotels",
+        element: <MyHotels />,
+        loader: async () => {
+          const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
+            credentials: "include"
+          })
+
+          if (!response.ok) {
+            return redirect("/sign-in")
+          }
+
+          return null
+        }
+      },
+      {
+        path: "edit-hotel/:hotelId",
+        element: <EditHotel />,
+        loader: async () => {
+          const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
+            credentials: "include"
+          })
+
+          if (!response.ok) {
             return redirect("/sign-in")
           }
 

@@ -4,6 +4,8 @@ import TypeSection from "./TypeSection";
 import FacilitiesSection from "./FacilitiesSection";
 import GuestsSection from "./GuestsSection";
 import ImagesSection from "./ImagesSection";
+import { HotelType } from "../../../../backend/shared/types";
+import { useEffect } from "react";
 
 export type HotelFormData = {
     name: string;
@@ -15,19 +17,25 @@ export type HotelFormData = {
     starRating: number;
     facilities: string[];
     imageFiles: FileList;
+    imageUrls: string[];
     adultCount: number;
     childCount: number;
 } // GOOD PRACTICE -> keep types in the same file that is describing
 
 type Props = {
+    hotel: HotelType
     onSave: (hotelFormData: FormData) => void
     isLoading: boolean
 }
 
-const ManageHotelForm = ({ onSave, isLoading }: Props) => {
+const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
     const formMethods = useForm<HotelFormData>()
 
-    const { handleSubmit } = formMethods
+    const { handleSubmit, reset } = formMethods
+
+    useEffect(() => {
+        reset(hotel)
+    }, [hotel, reset])
 
     const onSubmit = handleSubmit((formDataJson: HotelFormData) => {
         console.log(formDataJson)
