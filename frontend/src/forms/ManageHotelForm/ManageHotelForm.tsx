@@ -23,7 +23,7 @@ export type HotelFormData = {
 } // GOOD PRACTICE -> keep types in the same file that is describing
 
 type Props = {
-    hotel: HotelType
+    hotel?: HotelType
     onSave: (hotelFormData: FormData) => void
     isLoading: boolean
 }
@@ -42,6 +42,10 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
 
         const formData = new FormData()
 
+        if(hotel) {
+            formData.append("hotelId", hotel._id)
+        }
+
         formData.append("name", formDataJson.name)
         formData.append("city", formDataJson.city)
         formData.append("country", formDataJson.country)
@@ -53,8 +57,16 @@ const ManageHotelForm = ({ onSave, isLoading, hotel }: Props) => {
         formData.append("childCount", formDataJson.childCount.toString())
         
         formDataJson.facilities.forEach((facility, index) => {
+            // WORK TO DO: Learn more about forms and formData and do a project with formData
             formData.append(`facilities[${index}]`, facility)
         })
+
+        if(formDataJson.imageUrls) {
+            formDataJson.imageUrls.forEach((url, index) => {
+                // make an error to see what happens
+                formData.append(`imageUrls[${index}]`, url)
+            })
+        }
 
         // creating a array from filelist
         Array.from(formDataJson.imageFiles).forEach((imageFile) => {
