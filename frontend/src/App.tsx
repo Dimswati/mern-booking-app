@@ -5,6 +5,7 @@ import SignIn from './pages/SignIn'
 import AddHotel from './pages/AddHotel'
 import MyHotels from './pages/MyHotels'
 import EditHotel from './pages/EditHotel'
+import Search from './pages/Search'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || ""
 
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
       },
       {
         path: "search",
-        element: <p>Search Page</p>,
+        element: <Search/>,
       },
       {
         path: "register",
